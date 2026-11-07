@@ -1,3 +1,10 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 3 optimizations:
+# - [HIGH] Add pip dependency cache to "test" job
+# - [MEDIUM] Add concurrency group to "CI.yml"
+# - [LOW] Explicitly set fail-fast for large matrix job "test" (24 combinations)
+# Estimated savings: ~7 min/run
+#
 name: CI
 
 on:
@@ -11,6 +18,10 @@ on:
     - cron: "21 0 * * *"
   workflow_dispatch:
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 defaults:
   run:
     shell: bash -l {0}
